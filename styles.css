@@ -1,0 +1,60 @@
+.off
+{
+    opacity:.1;
+}
+
+.fade
+{
+    opacity:.1;
+}
+
+.tt-Title {
+    font-weight: 900;
+    padding-bottom: 20px;
+    padding-left: 20px;
+}
+
+#photo{
+    width: 100px;
+    height: 100px;
+}
+
+#tooltip{
+    border-color: black;
+    border-radius: 25px;
+    display: block;
+    width: 50%;
+    background: white;
+        
+}
+
+.tt-subtitle {
+    font-weight:900;
+    text-align: center;
+}
+
+.tt-summary {
+    overflow: auto;
+    float: right;
+}
+.allGrades {
+    overflow: auto;
+    float: right;
+    clear: right
+}
+
+
+.HighGrade,
+.LowGrade {
+    border-radius: 10px;
+    background-color: #BBBBBB;
+    width: 90px;
+    float: left;
+}
+
+
+.bigNum {
+    font-weight:900;
+    font-size: 32px;
+    text-align: center;
+}

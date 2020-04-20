@@ -56,7 +56,79 @@ var getFinal = function(penguin)
 }
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
+var getQuizGrade = function(quiz)
+{
+    return quiz.grade
+}
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+//Fills in Tooltip info
+var drawToolTip = function(penguin){
 
+    d3.select("#tooltip div")
+        .remove();
+
+    
+    var xPosition = d3.event.pageX;
+    var yPosition = d3.event.pageY;
+
+    var base = d3.select("#tooltip")
+        .classed("hidden",false)
+        .style("top",yPosition+"px")
+        .style("left",xPosition+"px")
+        .append("div")
+    
+    base.append("div")
+        .classed("tt-Title",true)
+        .text("Penguin Selected:");
+    
+    base.append('img')
+        .attr("id","photo")
+        .attr('src','imgs/'+penguin.picture);
+    
+    var summary = base.append("div")
+        .classed("tt-summary",true);
+    
+    var s = summary.append("div")
+        .classed("HighGrade",true);
+    
+    s.append("div")
+        .classed("tt-subtitle",true)
+        .text("Highest Quiz Grade")
+    
+    s.append("div")
+        .classed("bigNum",true)
+        .text(d3.max(penguin.quizes,getQuizGrade))
+
+    var e = summary.append("div")
+        .classed("LowGrade",true)
+    
+    e.append("div")
+        .classed("tt-subtitle",true)
+        .text("Lowest Quiz Grade")
+    
+    e.append("div")
+    .classed("bigNum",true)
+    .text(d3.min(penguin.quizes,getQuizGrade));
+    
+    base.append("div")
+        .classed("allGrades",true)
+        .append("ol")
+        .selectAll("li")
+        .data(penguin.quizes.map(getQuizGrade))
+        .enter()
+        .append("li")
+        .text(function(d)
+        {
+            return d.toFixed(2);
+        });
+    
+              
+}
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
 
 var drawLines = function(penguins,graph,target,
@@ -71,12 +143,6 @@ var drawLines = function(penguins,graph,target,
         })
         .curve(d3.curveCardinal)
         
-    
-    /*
-    .x(function(num,index){return xScale(index)})
-    .y(function(num){return yScale(num)})
-    */
-    
     
     var lines = d3.select(target)
         .select(".graph")
@@ -106,6 +172,7 @@ var drawLines = function(penguins,graph,target,
                 .classed("fade",false)
                 .raise(); //move to top
             }
+            drawToolTip(penguin)
         })
         .on("mouseout",function(penguin)
            {
@@ -115,8 +182,11 @@ var drawLines = function(penguins,graph,target,
             d3.selectAll(".line")
                 .classed("fade",false);
             }
+            d3.select("#tooltip")
+                    .classed("hidden",true);
             
         })
+    
     
     lines.append("path")
         .datum(function(penguin) 
@@ -252,7 +322,7 @@ tablePromise.then(function(penguins)
 {
     console.log("subject data",penguins);
 
-    initGraph("#weightLines",penguins);
+    initGraph("#quizLines",penguins);
    
 },
 function(err)
